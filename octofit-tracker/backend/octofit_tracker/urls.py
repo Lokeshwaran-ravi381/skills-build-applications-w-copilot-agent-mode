@@ -15,7 +15,22 @@ Including another URLconf
 """
 
 import os
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+# Landing page view for root URL
+def landing_page(request):
+    return HttpResponse("""
+        <html>
+        <head><title>Octofit Tracker API</title></head>
+        <body>
+            <h1>Welcome to Octofit Tracker API</h1>
+            <p>Use the <code>/api/</code> endpoints to access the REST API.</p>
+            <ul>
+                <li><a href='/api/url/'>API URL Info</a></li>
+                <li><a href='/api/activities/'>Activities Endpoint</a></li>
+            </ul>
+        </body>
+        </html>
+    """)
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
@@ -36,6 +51,7 @@ def api_url_info(request):
     return JsonResponse({'api_url': api_url})
 
 urlpatterns = [
+    path('', landing_page, name='landing-page'),
     path('admin/', admin.site.urls),
     path('api/url/', api_url_info, name='api-url-info'),
     path('api/', views.api_root, name='api-root'),
